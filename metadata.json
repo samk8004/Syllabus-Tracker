@@ -1,0 +1,8 @@
+{
+  "name": "ExamPrep Tracker",
+  "description": "Gamified progress tracker for Physics, Chemistry, and Mathematics",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
