@@ -181,6 +181,27 @@ export default function App() {
     });
   };
 
+  const handleToggleReattempt = (chapterId: string, reattemptIndex: number) => {
+    setState(prev => {
+      const subjectChapters = [...(prev[activeSubject] || [])];
+      const chapterIndex = subjectChapters.findIndex(c => c.id === chapterId);
+      
+      if (chapterIndex !== -1) {
+        const updatedChapter = { ...subjectChapters[chapterIndex] };
+        const updatedReattempts = [...(updatedChapter.reattempts || [false, false])];
+        updatedReattempts[reattemptIndex] = !updatedReattempts[reattemptIndex];
+        updatedChapter.reattempts = updatedReattempts;
+        subjectChapters[chapterIndex] = updatedChapter;
+        
+        return {
+          ...prev,
+          [activeSubject]: subjectChapters
+        };
+      }
+      return prev;
+    });
+  };
+
   const handleReset = () => {
     setState(INITIAL_STATE);
     setShowResetConfirm(false);
@@ -390,6 +411,7 @@ export default function App() {
                         index={idx}
                         onToggleTask={handleToggleTask}
                         onToggleRevision={handleToggleRevision}
+                        onToggleReattempt={handleToggleReattempt}
                         isEditMode={isEditMode}
                       />
                     </React.Fragment>

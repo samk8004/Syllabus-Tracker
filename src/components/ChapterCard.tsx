@@ -8,6 +8,7 @@ interface ChapterCardProps {
   subject: SubjectId;
   onToggleTask: (chapterId: string, taskId: TaskId) => void;
   onToggleRevision: (chapterId: string, index: number) => void;
+  onToggleReattempt: (chapterId: string, index: number) => void;
   index: number;
   isEditMode: boolean;
 }
@@ -17,6 +18,7 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
   subject,
   onToggleTask,
   onToggleRevision,
+  onToggleReattempt,
   index,
   isEditMode
 }) => {
@@ -27,7 +29,7 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
     if (subject === 'english') {
       const isCreative = chapter.id.startsWith('eng-') && parseInt(chapter.id.split('-')[1]) >= 20;
       if (isCreative) {
-        const allowed = ['lectures', 'notes', 'dpps', 'revision', 'qcb', 'pyqs'];
+        const allowed = ['lectures', 'notes', 'dpps', 'revision', 'qcb', 'pyqs', 'reattempt_imp_q'];
         return allowed.includes(t.id);
       } else {
         if (t.id === 'ncert_exam' || t.id === 'ncert_exer' || t.id === 'ncert_exen' || t.id === 'short_notes') {
@@ -35,7 +37,7 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
         }
       }
     } else if (subject === 'pe') {
-      if (t.id === 'ncert_exam' || t.id === 'ncert_exer' || t.id === 'ncert_exen' || t.id === 'short_notes') {
+      if (t.id === 'ncert_exam' || t.id === 'ncert_exer' || t.id === 'ncert_exen' || t.id === 'short_notes' || t.id === 'reattempt_imp_q') {
         return false;
       }
     }
@@ -48,6 +50,9 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
     if (t.id === 'revision') {
       const revs = chapter.revisions || [false, false, false, false, false, false, false];
       completedTasks += Math.min(3, revs.filter(Boolean).length) / 3;
+    } else if (t.id === 'reattempt_imp_q') {
+      const reattempts = chapter.reattempts || [false, false];
+      completedTasks += Math.min(2, reattempts.filter(Boolean).length) / 2;
     } else {
       completedTasks += (chapter.tasks[t.id] ? 1 : 0);
     }
@@ -144,11 +149,51 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
                             }}
                             className={`flex-1 h-6 flex items-center justify-center rounded-[4px] text-[9px] md:text-[10px] font-bold transition-all ${
                               r 
-                                ? `bg-current ${colors.text} text-white dark:text-[#111] border-transparent shadow-[0_0_8px_currentColor]` 
+                                ? `bg-current ${colors.text} text-white dark:text-[#111] border-transparent shadow-[0_0_8px_currentColor]`
                                 : 'bg-gray-100 dark:bg-[#222] text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
                             }`}
                           >
                             R{i + 1}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+
+                if (task.id === 'reattempt_imp_q') {
+                  const reattempts = chapter.reattempts || [false, false];
+                  const completedReattempts = reattempts.filter(Boolean).length;
+                  const isDone = completedReattempts >= 2;
+                  
+                  return (
+                    <div key={task.id} className={`col-span-2 lg:col-span-2 relative overflow-hidden flex flex-col justify-center py-2 px-3 rounded-xl border transition-all duration-200 ${
+                      isDone ? `${colors.bg} ${colors.border} ${colors.glow}` : 'bg-white dark:bg-[#1a1a1a] border-gray-200 dark:border-gray-800'
+                    }`}>
+                      <div className="flex items-center justify-between mb-1.5 relative z-10">
+                        <span className={`text-xs font-medium tracking-wide ${isDone ? colors.text : 'text-gray-500 dark:text-gray-400'}`}>
+                          Reattempt Imp. Q
+                        </span>
+                        <span className={`text-[10px] font-mono ${isDone ? colors.text : 'text-gray-500'}`}>
+                          {completedReattempts}/2
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between gap-1 relative z-10">
+                        {reattempts.map((r, i) => (
+                          <button
+                            key={i}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (r && !isEditMode) return;
+                              onToggleReattempt(chapter.id, i);
+                            }}
+                            className={`flex-1 h-6 flex items-center justify-center rounded-[4px] text-[9px] md:text-[10px] font-bold transition-all ${
+                              r 
+                                ? `bg-current ${colors.text} text-white dark:text-[#111] border-transparent shadow-[0_0_8px_currentColor]`
+                                : 'bg-gray-100 dark:bg-[#222] text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
+                            }`}
+                          >
+                            {i + 1}
                           </button>
                         ))}
                       </div>

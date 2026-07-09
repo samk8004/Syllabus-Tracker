@@ -9,6 +9,7 @@ const createEmptyTasks = (): Record<TaskId, boolean> => ({
   ncert_exer: false,
   ncert_exen: false,
   revision: false,
+  reattempt_imp_q: false,
   qcb: false,
   pyqs: false,
 });
@@ -19,6 +20,7 @@ const generateChapters = (prefix: string, names: string[]): Chapter[] => {
     name,
     tasks: createEmptyTasks(),
     revisions: [false, false, false, false, false, false, false],
+    reattempts: [false, false],
   }));
 };
 

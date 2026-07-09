@@ -9,6 +9,7 @@ export type TaskId =
   | 'ncert_exer'
   | 'ncert_exen'
   | 'revision'
+  | 'reattempt_imp_q'
   | 'qcb'
   | 'pyqs';
 
@@ -22,6 +23,7 @@ export interface Chapter {
   name: string;
   tasks: Record<TaskId, boolean>;
   revisions?: boolean[];
+  reattempts?: boolean[];
 }
 
 export interface TrackerState {
@@ -41,6 +43,7 @@ export const TASKS: TaskDef[] = [
   { id: 'ncert_exer', label: 'NCERT Exercises' },
   { id: 'ncert_exen', label: 'NCERT Exemplar' },
   { id: 'revision', label: 'Revision' },
+  { id: 'reattempt_imp_q', label: 'Reattempt Imp. Questions' },
   { id: 'qcb', label: 'QCB' },
   { id: 'pyqs', label: "PYQ's" },
 ];
