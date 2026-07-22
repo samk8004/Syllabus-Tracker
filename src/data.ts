@@ -5,6 +5,7 @@ const createEmptyTasks = (): Record<TaskId, boolean> => ({
   notes: false,
   short_notes: false,
   dpps: false,
+  ncert_read: false,
   ncert_exam: false,
   ncert_exer: false,
   ncert_exen: false,

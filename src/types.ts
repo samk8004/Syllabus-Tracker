@@ -5,6 +5,7 @@ export type TaskId =
   | 'notes'
   | 'short_notes'
   | 'dpps'
+  | 'ncert_read'
   | 'ncert_exam'
   | 'ncert_exer'
   | 'ncert_exen'
@@ -39,6 +40,7 @@ export const TASKS: TaskDef[] = [
   { id: 'notes', label: 'Notes' },
   { id: 'short_notes', label: 'Short Notes' },
   { id: 'dpps', label: "DPP's" },
+  { id: 'ncert_read', label: 'NCERT Read' },
   { id: 'ncert_exam', label: 'NCERT Examples' },
   { id: 'ncert_exer', label: 'NCERT Exercises' },
   { id: 'ncert_exen', label: 'NCERT Exemplar' },

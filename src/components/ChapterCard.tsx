@@ -29,7 +29,7 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
     if (subject === 'english') {
       const isCreative = chapter.id.startsWith('eng-') && parseInt(chapter.id.split('-')[1]) >= 20;
       if (isCreative) {
-        const allowed = ['lectures', 'notes', 'dpps', 'revision', 'qcb', 'pyqs', 'reattempt_imp_q'];
+        const allowed = ['lectures', 'notes', 'dpps', 'ncert_read', 'revision', 'qcb', 'pyqs', 'reattempt_imp_q'];
         return allowed.includes(t.id);
       } else {
         if (t.id === 'ncert_exam' || t.id === 'ncert_exer' || t.id === 'ncert_exen' || t.id === 'short_notes') {
@@ -37,7 +37,11 @@ export const ChapterCard: React.FC<ChapterCardProps> = ({
         }
       }
     } else if (subject === 'pe') {
-      if (t.id === 'ncert_exam' || t.id === 'ncert_exer' || t.id === 'ncert_exen' || t.id === 'short_notes' || t.id === 'reattempt_imp_q') {
+      if (t.id === 'ncert_exam' || t.id === 'ncert_exer' || t.id === 'ncert_exen' || t.id === 'short_notes' || t.id === 'reattempt_imp_q' || t.id === 'ncert_read') {
+        return false;
+      }
+    } else if (subject === 'math') {
+      if (t.id === 'ncert_read') {
         return false;
       }
     }
